@@ -1,0 +1,79 @@
+/* General Reset and Body Styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+}
+
+h1 {
+    text-align: center;
+    color: #16a085;
+    font-size: 36px;
+    padding-top: 50px;
+}
+
+/* Navigation Bar */
+nav {
+    background-color: #2c3e50;
+    padding: 15px 0;
+    text-align: center;
+}
+
+nav ul {
+    list-style-type: none;
+}
+
+nav ul li {
+    display: inline-block;
+    margin: 0 15px;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 8px 20px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+nav a:hover {
+    background-color: #16a085;
+}
+
+#status {
+    text-align: center;
+    font-size: 18px;
+    margin: 20px 0;
+}
+
+pre {
+    background-color: #ecf0f1;
+    padding: 15px;
+    border-radius: 4px;
+    color: #16a085;
+    font-size: 16px;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    nav ul li {
+        display: block;
+        margin: 10px 0;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    nav a {
+        font-size: 16px;
+    }
+}

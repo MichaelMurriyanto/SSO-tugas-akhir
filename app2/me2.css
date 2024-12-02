@@ -1,0 +1,38 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #e8f5e9; /* Warna latar belakang hijau muda */
+    color: #1b5e20; /* Warna teks hijau gelap */
+    margin: 0;
+    padding: 20px;
+}
+h2 {
+    text-align: center;
+    color: #388e3c; /* Warna hijau untuk judul */
+}
+#main {
+    background-color: #c8e6c9; /* Warna latar belakang untuk konten */
+    border: 1px solid #388e3c; /* Border hijau gelap */
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+}
+a {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #4caf50; /* Warna hijau untuk tombol */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+a:hover {
+    background-color: #388e3c; /* Warna hijau gelap saat hover */
+}
+pre {
+    background-color: #f1f8e9; /* Latar belakang untuk data JSON */
+    padding: 10px;
+    border: 1px solid #c8e6c9; /* Border hijau muda */
+    border-radius: 5px;
+    overflow-x: auto; /* Mengizinkan scroll horizontal jika diperlukan */
+}

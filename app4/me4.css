@@ -1,0 +1,173 @@
+/* styles.css */
+
+/* Reset margin and padding */
+body, h2, div, pre, a {
+    margin: 0;
+    padding: 0;
+}
+
+/* Set background color and font for the body */
+body {
+    background-color: #f0f0f0; /* Warna latar belakang abu-abu muda */
+    font-family: Arial, sans-serif; /* Font yang digunakan */
+    color: #333; /* Warna teks abu-abu gelap */
+    line-height: 1.6; /* Jarak antar baris */
+}
+
+/* Styling untuk judul halaman */
+#page-title {
+    text-align: center; /* Pusatkan teks */
+    margin: 20px 0; /* Margin atas dan bawah */
+    color: #444; /* Warna teks judul */
+}
+
+/* Styling untuk kontainer utama */
+#main {
+    max-width: 800px; /* Lebar maksimum kontainer */
+    margin: 20px auto; /* Pusatkan kontainer dengan margin otomatis */
+    padding: 20px; /* Padding di dalam kontainer */
+    background-color: #fff; /* Warna latar belakang putih untuk kontainer */
+    border-radius: 8px; /* Sudut membulat */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Bayangan untuk efek kedalaman */
+}
+
+/* Styling untuk elemen pre */
+pre {
+    background-color: #f9f9f9; /* Latar belakang abu-abu sangat muda */
+    border: 1px solid #ddd; /* Garis batas abu-abu */
+    padding: 10px; /* Padding di dalam elemen pre */
+    border-radius: 4px; /* Sudut membulat */
+    overflow: auto; /* Mengatasi overflow */
+}
+
+/* Styling untuk tautan */
+a {
+    display: block; /* Tampilkan tautan sebagai blok */
+    margin-top: 20px; /* Margin atas untuk spasi */
+    text-align: center; /* Pusatkan teks tautan */
+    color: #007BFF; /* Warna tautan biru */
+    text-decoration: none; /* Hilangkan garis bawah */
+}
+
+a:hover {
+    text-decoration: underline; /* Garis bawah saat hover */
+    color: #0056b3; /* Warna saat hover */
+}
+
+/* Center the main content */
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 20px;
+}
+
+#main {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Style the registration button */
+#registerBtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+#registerBtn:hover {
+    background-color: #45a049;
+}
+
+/* Style the registration form */
+#registerForm {
+    background-color: #ffffff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#registerForm h3 {
+    margin-top: 0;
+    text-align: center;
+}
+
+#registerForm label {
+    font-weight: bold;
+    margin-top: 10px;
+    align-self: flex-start;
+}
+
+#registerForm input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#registerForm button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+    margin-top: 15px;
+}
+
+#registerForm button:hover {
+    background-color: #45a049;
+}
+
+/* Style the rekening bank table */
+#rekeningData {
+    margin-top: 30px;
+    max-width: 600px;
+    width: 100%;
+}
+
+#rekeningData table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+#rekeningData th, #rekeningData td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+#rekeningData th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#rekeningData td {
+    text-align: center;
+    color: #333;
+}
+
+#rekeningData tr:nth-child(even) {
+    background-color: #f9f9f9;
+}

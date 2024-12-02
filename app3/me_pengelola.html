@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rumah Sakit: Pengelola Profile</title>
+    <script src="http://zeptojs.com/zepto.min.js"></script>
+    <script src="http://localhost:8080/js/keycloak.js"></script>
+    <script src="app.js"></script>
+    <link rel="stylesheet" href="me3.css">
+</head>
+<body>
+<h2 id="page-title">Rumah Sakit: Pengelola Info</h2>
+<div id="main"></div>
+<script>
+    $(function () {
+      window.keycloak
+        .init({
+          flow: 'implicit',
+          onLoad: 'check-sso',
+        })
+        .then(function (authenticated) {
+          if (!authenticated) {
+            window.keycloak.logout({
+              redirectUri: window.location.origin + '/v2/app3/index.html'
+            });
+          }
+          window.keycloak.loadUserInfo().then((data) => {
+            $.ajax({
+              url: 'save_pengelola.php',
+              type: 'POST',
+              data: JSON.stringify(data),
+              contentType: 'application/json',
+              success: function(response) {
+                const pengelolaData = JSON.parse(response);
+
+                if (pengelolaData.status === "success") {
+                  // Display data in a readable format
+                  $('#main').html(`
+                    <h3>Data Pengelola:</h3>
+                    <p><strong>Nama:</strong> ${pengelolaData.data.nama}</p>
+                    <p><strong>Email:</strong> ${pengelolaData.data.email}</p>
+                    <p><strong>No. HP:</strong> ${pengelolaData.data.no_hp}</p>
+                    <p><strong>NIK:</strong> ${pengelolaData.data.nik}</p>
+                    <p><strong>Alamat:</strong> ${pengelolaData.data.alamat}</p>
+                    <p><strong>No. BPJS:</strong> ${pengelolaData.data.no_bpjs}</p>
+                    <p><strong>Kelas BPJS:</strong> ${pengelolaData.data.kelas_bpjs}</p>
+                    <p><strong>Faskes:</strong> ${pengelolaData.data.faskes}</p>
+                  `);
+                  $('<a>', {
+                    text: 'Back to Homepage',
+                    href: 'index.html',
+                    style: 'display: block; margin-top: 20px;'
+                  }).appendTo('#main');
+                } else {
+                  $('#main').html(`<p>${pengelolaData.message}</p>`);
+                }
+              },
+              error: function(err) {
+                console.log(err);
+                $('#main').html('<p>Gagal mengambil data. Silakan coba lagi.</p>');
+              }
+            });
+          }).catch((error) => {
+            console.log(error);
+          });
+        })
+        .catch(function () {
+          console.log('Failed to initialize');
+        });
+    });
+</script>
+</body>
+</html>

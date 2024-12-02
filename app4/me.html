@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BANK: User Profile</title>
+    <script src="https://zeptojs.com/zepto.min.js"></script>
+    <script src="http://localhost:8080/js/keycloak.js"></script>
+    <script src="app.js"></script>
+    <link rel="stylesheet" href="me4.css">
+</head>
+<body>
+<h2 id="page-title">BANK: User Info</h2>
+<div id="main"></div>
+
+<!-- Button to show the registration form -->
+<button id="registerBtn">Register New Rekening</button>
+
+<!-- Registration Form -->
+<div id="registerForm" style="display:none;">
+    <h3>Register Rekening Bank</h3>
+    <form id="rekeningForm">
+        <label for="rumah_sakit">Nama Rumah Sakit:</label>
+        <input type="text" id="rumah_sakit" name="rumah_sakit" required><br><br>
+        
+        <label for="alamat_RS">Alamat Rumah Sakit:</label>
+        <input type="text" id="alamat_RS" name="alamat_RS" required><br><br>
+        
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+<h3>Rekening Bank Data</h3>
+<div id="rekeningData"></div>
+
+<script>
+  $(function () {
+    window.keycloak
+      .init({
+        flow: 'implicit',
+        onLoad: 'check-sso',
+      })
+      .then(function (authenticated) {
+        if (!authenticated) {
+          window.keycloak.logout({
+            redirectUri: window.location.origin + '/v2/app4/index.html'
+          });
+        }
+        
+        // Fetch and display user data
+        window.keycloak.loadUserInfo().then((data) => {
+          $.ajax({
+            url: 'save_user.php',
+            type: 'POST',
+            data: JSON.stringify({ sub: data.sub }),
+            contentType: 'application/json',
+            success: function(response) {
+              response = JSON.parse(response);
+              if (response.status === "success" && response.data) {
+                $('#main').html('<pre>' + JSON.stringify(response.data, null, '\t') + '</pre>');
+              } else {
+                $('#main').html('<p>' + response.message + '</p>');
+              }
+            },
+            error: function(err) {
+              console.log(err);
+            }
+          });
+
+          // Fetch and display rekeningBank data
+          $.ajax({
+            url: 'get_rekening.php',
+            type: 'POST',
+            data: JSON.stringify({ sub: data.sub }),
+            contentType: 'application/json',
+            success: function(response) {
+              response = JSON.parse(response);
+              if (response.status === "success" && response.data) {
+                let html = "<table border='1'><tr><th>Rumah Sakit</th><th>Alamat RS</th><th>Rekening</th><th>QRIS</th></tr>";
+                response.data.forEach((item) => {
+                  html += "<tr><td>" + item.rumah_sakit + "</td><td>" + item.alamat_RS + "</td><td>" + item.rekening + "</td><td>" + item.QRIS + "</td></tr>";
+                });
+                html += "</table>";
+                $('#rekeningData').html(html);
+              } else {
+                $('#rekeningData').html('<p>' + response.message + '</p>');
+              }
+            },
+            error: function(err) {
+              console.log(err);
+            }
+          });
+        }).catch((error) => {
+          console.log(error);
+        });
+
+        // Show registration form on button click
+        $('#registerBtn').on('click', function() {
+          $('#registerForm').toggle();
+        });
+
+        // Handle form submission
+        $('#rekeningForm').on('submit', function(e) {
+          e.preventDefault();
+          const formData = {
+            sub: window.keycloak.tokenParsed.sub,
+            rumah_sakit: $('#rumah_sakit').val(),
+            alamat_RS: $('#alamat_RS').val()
+          };
+
+          $.ajax({
+            url: 'register_rek.php',
+            type: 'POST',
+            data: JSON.stringify(formData),
+            contentType: 'application/json',
+            success: function(response) {
+              alert('Rekening registered successfully');
+              $('#registerForm').hide();
+              location.reload(); // Reload to display updated data
+            },
+            error: function(err) {
+              console.log(err);
+            }
+          });
+        });
+      })
+      .catch(function () {
+        console.log('failed to initialize');
+      });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,123 @@
+/* General reset and body styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+}
+
+h2, h3 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+/* Page Title */
+#page-title {
+    text-align: center;
+    color: #16a085;
+    font-size: 32px;
+    padding-top: 20px;
+}
+
+/* Main Container */
+#main {
+    background-color: #fff;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 900px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#rawat-jalan-section {
+    background-color: #fff;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 900px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Styling for user information display */
+#main pre {
+    white-space: pre-wrap; /* Prevent text from overflowing */
+    word-wrap: break-word;
+    padding: 15px;
+    background-color: #ecf0f1;
+    border-radius: 4px;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+#main p {
+    color: #e74c3c;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Rawat Jalan records */
+#rawat-jalan-data {
+    margin-top: 20px;
+}
+
+#rawat-jalan-data ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+#rawat-jalan-data li {
+    padding: 10px;
+    margin-bottom: 15px;
+    background-color: #ecf0f1;
+    border-left: 5px solid #16a085;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#rawat-jalan-data hr {
+    border: 0;
+    height: 1px;
+    background-color: #ddd;
+    margin: 15px 0;
+}
+
+/* Error messages */
+#error-message {
+    color: #e74c3c;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Form and input styling */
+input[type="text"],
+input[type="date"],
+input[type="time"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    font-size: 14px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #16a085;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+button:hover {
+    background-color: #1abc9c;
+}

@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  db:
+      image: mysql
+      environment:
+          - MYSQL_DATABASE=keycloak
+          - MYSQL_USER=keycloak
+          - MYSQL_PASSWORD=password
+          - MYSQL_ROOT_PASSWORD=root_password
+      ports:
+          - 3309:3309
+
+  phpmyadmin:
+      image: phpmyadmin/phpmyadmin  # Menggunakan image phpMyAdmin dari Docker Hub
+      environment:
+          - PMA_HOST=db              # Nama service MySQL (sesuai dengan nama service "db")
+          - PMA_USER=root             # User yang digunakan untuk login ke MySQL
+          - PMA_PASSWORD=root_password  # Password user root MySQL
+      ports:
+          - 8081:80  # Mengekspos phpMyAdmin pada port 8081
+
+  keycloak:
+      image: quay.io/keycloak/keycloak:25.0.5
+      environment:
+          - KEYCLOAK_ADMIN=admin
+          - KEYCLOAK_ADMIN_PASSWORD=admin
+          - DB_VENDOR=mysql
+          - DB_ADDR=db
+          - DB_PORT=3309
+      links:
+          - db:db
+      ports:
+          - 8080:8080
+          - 9999:9990
+          - 443:8443
+      volumes:
+          - ./data:/data
+      command: start-dev
+      depends_on:
+        - db

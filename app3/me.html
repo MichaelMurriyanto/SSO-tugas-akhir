@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rumah Sakit: User Profile</title>
+    <script src="http://zeptojs.com/zepto.min.js"></script>
+    <script src="http://localhost:8080/js/keycloak.js"></script>
+    <script src="app.js"></script>
+    <link rel="stylesheet" href="me3.css">
+</head>
+<body>
+<h2 id="page-title">Rumah Sakit: User Info</h2>
+<div id="main"></div>
+
+<div id="rawat-jalan-section">
+    <h3>Rawat Jalan Records</h3>
+    <div id="rawat-jalan-data"></div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        window.keycloak.init({
+            flow: 'implicit',
+            onLoad: 'check-sso',
+        }).then(function(authenticated) {
+            if (!authenticated) {
+                window.keycloak.logout({
+                    redirectUri: window.location.origin + '/v2/app3/index.html'
+                });
+            } else {
+                window.keycloak.loadUserInfo().then(function(data) {
+                    const userSub = { sub: data.sub }; // Prepare sub for both requests
+
+                    // First AJAX call to load and display user info (from save_user.php)
+                    $.ajax({
+                        url: 'save_user.php',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(userSub),
+                        success: function(response) {
+                            const res = JSON.parse(response);
+                            if (res.status === "success") {
+                                $('#main').html('<pre>' + JSON.stringify(res.data, null, '\t') + '</pre>');
+                                console.log("User data saved/updated and displayed successfully.");
+                            } else {
+                                console.error("Error:", res.message);
+                                $('#main').html("<p>Error loading user data: " + res.message + "</p>");
+                            }
+                        },
+                        error: function(err) {
+                            console.error("Failed to load user data:", err);
+                            $('#main').html("<p>Failed to load user data.</p>");
+                        }
+                    });
+
+                    // Second AJAX call to load and display rawat_jalan data (from get_rawat_jalan.php)
+                    $.ajax({
+                        url: 'get_rawat_jalan.php',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(userSub),
+                        success: function(rawatResponse) {
+                            const rawatRes = JSON.parse(rawatResponse);
+                            if (rawatRes.status === "success") {
+                                const rawatData = rawatRes.data;
+                                if (rawatData.length > 0) {
+                                    let rawatDisplay = '<ul>';
+                                    rawatData.forEach(record => {
+                                        rawatDisplay += `<li>No Rawat Jalan: ${record.no_rawat_jalan}<br>
+                                                        No Rekam Medis: ${record.no_rekam_medis}<br>
+                                                        Klinik: ${record.jenis_klinik}<br>
+                                                        Dokter: ${record.dokter}<br>
+                                                        Tanggal: ${record.tanggal}<br>
+                                                        Waktu: ${record.waktu}<br>
+                                                        Keluhan: ${record.keluhan}</li><hr>`;
+                                    });
+                                    rawatDisplay += '</ul>';
+                                    $('#rawat-jalan-data').html(rawatDisplay);
+                                } else {
+                                    $('#rawat-jalan-data').html("<p>No rawat jalan records found.</p>");
+                                }
+                            } else {
+                                $('#rawat-jalan-data').html("<p>Error loading rawat jalan data: " + rawatRes.message + "</p>");
+                            }
+                        },
+                        error: function(err) {
+                            console.error("Failed to load rawat jalan data:", err);
+                            $('#rawat-jalan-data').html("<p>Failed to load rawat jalan data.</p>");
+                        }
+                    });
+                });
+            }
+        }).catch(function() {
+            console.log('Failed to initialize Keycloak');
+        });
+    });
+</script>
+    <div id="registration-form">
+        <h3>Formulir Rawat Jalan</h3>
+        <form id="rawat-jalan-form">
+            <label for="no_rekam_medis">No Rekam Medis:</label>
+            <input type="text" id="no_rekam_medis" name="no_rekam_medis" readonly>
+            <button type="button" id="get_no_rekam_medis">Dapatkan No Rekam Medis</button><br>
+    
+            <label for="jenis_klinik">Jenis Klinik:</label>
+            <input type="text" id="jenis_klinik" name="jenis_klinik" required><br>
+    
+            <label for="dokter">Dokter:</label>
+            <input type="text" id="dokter" name="dokter" required><br>
+    
+            <label for="tanggal">Tanggal:</label>
+            <input type="date" id="tanggal" name="tanggal" required><br>
+    
+            <label for="waktu">Waktu:</label>
+            <input type="time" id="waktu" name="waktu" required><br>
+    
+            <label for="keluhan">Keluhan:</label>
+            <textarea id="keluhan" name="keluhan" required></textarea><br>
+    
+            <button type="submit">Simpan Data</button>
+        </form>
+    </div>
+    <script>
+    $(document).ready(function() {
+        // Get no_rekam_medis on button click
+        $('#get_no_rekam_medis').click(function() {
+            const sub = keycloak.tokenParsed.sub;
+            $.ajax({
+                url: 'register_rawat_jalan.php',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ sub: sub }),
+                success: function(response) {
+                    const res = JSON.parse(response);
+                    if (res.status === "success") {
+                        $('#no_rekam_medis').val(res.data.no_rekam_medis);
+                    } else {
+                        alert(res.message);
+                    }
+                }
+            });
+        });
+        // Submit form data to register_rawat_jalan.php
+        $('#rawat-jalan-form').submit(function(event) {
+            event.preventDefault();
+            const formData = {
+                sub: keycloak.tokenParsed.sub,
+                no_rekam_medis: $('#no_rekam_medis').val(),
+                jenis_klinik: $('#jenis_klinik').val(),
+                dokter: $('#dokter').val(),
+                tanggal: $('#tanggal').val(),
+                waktu: $('#waktu').val(),
+                keluhan: $('#keluhan').val()
+            };
+            $.ajax({
+                url: 'register_rawat_jalan.php',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(formData),
+                success: function(response) {
+                    const res = JSON.parse(response);
+                    if (res.status === "success") {
+                        alert("Data rawat jalan berhasil disimpan.");
+                    } else {
+                        alert("Error: " + res.message);
+                    }
+                }
+            });
+        });
+    });
+    </script>
+</body>
+</html>

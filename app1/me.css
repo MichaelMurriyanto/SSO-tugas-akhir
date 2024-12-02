@@ -1,0 +1,176 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    margin: 20px;
+}
+
+#main {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+h3 {
+    color: #333;
+}
+
+button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin: 10px 0 5px;
+    color: #555;
+}
+
+input[type="text"], input[type="number"] {
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+}
+
+input[type="text"]:focus, input[type="number"]:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+#input-form {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    display: none;
+}
+
+#input-form button[type="submit"] {
+    background-color: #28a745;
+}
+
+#input-form button[type="submit"]:hover {
+    background-color: #218838;
+}
+
+#show-form-button {
+    background-color: #007BFF; /* Warna biru */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px 2px;
+    cursor: pointer;
+    border-radius: 5px; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+}
+
+#show-form-button:hover {
+    background-color: #0056b3;
+}
+
+#input-form {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-top: 15px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+/* Gaya untuk tabel */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 18px;
+    text-align: left;
+}
+th, td {
+    padding: 12px;
+    border: 1px solid #ddd;
+}
+th {
+    background-color: #007BFF; /* Warna biru untuk header */
+    color: white;
+}
+tr:nth-child(even) {
+    background-color: #f2f2f2; /* Warna latar untuk baris genap */
+}
+tr:hover {
+    background-color: #f1f1f1; /* Warna latar saat hover */
+}
+
+/* Gaya untuk tombol input data */
+#show-form-button {
+    background-color: #007BFF; /* Warna biru */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    font-size: 16px;
+    margin: 15px 0;
+    cursor: pointer;
+    border-radius: 5px; /* Membuat sudut tombol melengkung */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Efek bayangan */
+    transition: background-color 0.3s;
+}
+#show-form-button:hover {
+    background-color: #0056b3; /* Warna lebih gelap saat di-hover */
+}
+
+/* Gaya untuk form input */
+#input-form {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-top: 15px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+/* Gaya untuk label dan input form */
+label {
+    display: block;
+    margin: 8px 0 4px;
+    font-weight: bold;
+}
+input[type="text"], input[type="number"] {
+    width: calc(100% - 20px);
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+button[type="submit"] {
+    background-color: #28a745; /* Warna hijau untuk tombol submit */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+button[type="submit"]:hover {
+    background-color: #218838; /* Warna lebih gelap saat di-hover */
+}

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script src="http://zeptojs.com/zepto.min.js"></script>
+    <script src="http://localhost:8080/js/keycloak.js"></script>
+    <script src="app.js"></script>
+    <link rel="stylesheet" type="text/css" href="index3.css">
+    <title>Rumah Sakit: Home</title>
+  </head>
+  <body>
+    <h1>Rumah Sakit APP</h1>
+    <nav role="navigation">
+      <div id="status"></div>
+      <ul>
+        <li>
+          <a title="login" id="login" href="me.html">Login</a>
+        </li>
+        <li>
+          <a title="logout" id="logout" href="index.html">logout</a>
+        </li>
+        <li>
+          <a title="loginPengelola" id="loginPengelola" href="#">My Hospital</a>
+        </li>
+      </ul>
+    </nav>
+    <script>
+      $(function () {
+        window.keycloak
+          .init({
+            flow: 'implicit',
+            onLoad: 'check-sso',
+          })
+          .then(function (authenticated) {
+            if (authenticated) {
+              $('#status').html($('<pre>SSO Authenticated ✅</pre>'));
+              // Load user info to check roles
+              window.keycloak.loadUserInfo().then(function (userInfo) {
+                // Check if the user has the "pengelola" role in realm roles
+                if (
+                  window.keycloak.tokenParsed &&
+                  window.keycloak.tokenParsed.realm_access &&
+                  window.keycloak.tokenParsed.realm_access.roles.includes("pengelola")
+                ) {
+                  $('#loginPengelola').on('click', function (e) {
+                    e.preventDefault();
+                    window.keycloak.login({
+                      redirectUri: 'http://localhost/v2/app3/me_pengelola.html',
+                    });
+                  });
+                } else {
+                  $('#loginPengelola').on('click', function (e) {
+                    e.preventDefault();
+                    alert('Access denied: You do not have the required role.');
+                  });
+                }
+              });
+            } else {
+              $('#status').html($('<pre>SSO Not Authenticated 🔥</pre>'));
+            }
+            $('#login').on('click', function (e) {
+              e.preventDefault();
+              window.keycloak.login({
+                redirectUri: 'http://localhost/v2/app3/me.html',
+              });
+            });
+            $('#logout').on('click', function (e) {
+              e.preventDefault();
+              window.keycloak.logout({
+                redirectUri: 'http://localhost/v2/app3/index.html',
+              });
+            });
+          })
+          .catch(function () {
+            console.log('failed to initialize');
+          });
+      });
+    </script>
+  </body>
+</html>

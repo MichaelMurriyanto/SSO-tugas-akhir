@@ -1,0 +1,100 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BPJS: user profile</title>
+    <script src="https://zeptojs.com/zepto.min.js"></script>
+    <script src="http://localhost:8080/js/keycloak.js"></script>
+    <script src="app.js"></script>  
+    <link rel="stylesheet" href="me2.css">
+</head>
+<body>
+<h2 id="page-title">BPJS: User Info</h2>
+<div id="main"></div>
+
+<script>
+  $(function () {
+    window.keycloak
+      .init({
+        flow: 'implicit',
+        onLoad: 'check-sso',
+      })
+      .then(function (authenticated) {
+        if (!authenticated) {
+          window.keycloak.logout({
+            'redirectUri': 'http://localhost/v2/app2/index.html'
+          });
+        }
+        
+        // Memuat informasi pengguna dari Keycloak
+        window.keycloak
+          .loadUserInfo()
+          .then((data) => {
+            const sub = data.sub;
+
+            // Memeriksa `sub` di database BPJS melalui get_user_info.php
+            $.post('get_user_info.php', { sub: sub }, function(response) {
+              const result = JSON.parse(response);
+              if (result.success) {
+                // Menampilkan data pengguna dari database BPJS
+                $('#main').after(
+                  $('<pre>' + JSON.stringify(result.data, null, '\t') + '</pre>'),
+                  $('<a>', {
+                    text: 'back to homepage',
+                    href: 'index.html',
+                  }),
+                );
+              } else {
+                // Menampilkan pesan jika data pengguna tidak ditemukan di kedua database
+                $('#main').after(
+                  $('<pre>Pengguna tidak ditemukan di database BPJS atau Kependudukan.</pre>'),
+                  $('<a>', {
+                    text: 'back to homepage',
+                    href: 'index.html',
+                  }),
+                );
+              }
+            });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      })
+      .catch(function () {
+        console.log('failed to initialize');
+      });
+  });
+</script>
+<button id="registerBtn">Registrasi</button>
+<pre id="registrationStatus"></pre>
+<script>
+  $(function () {
+    $('#registerBtn').on('click', function () {
+      // Muat informasi pengguna dari Keycloak
+      window.keycloak.loadUserInfo().then((data) => {
+        const sub = data.sub;
+
+        // Mengirim permintaan registrasi ke register_user.php
+        $.post('register_user.php', { sub: sub }, function(response) {
+          const result = JSON.parse(response);
+
+          // Tampilkan pesan hasil registrasi
+          if (result.success) {
+            $('#registrationStatus').text(
+              `Registrasi berhasil! kelas_bpjs: ${result.kelas_bpjs}, faskes: ${result.faskes}, No_bpjs: ${result.No_bpjs}`
+            );
+          } else {
+            $('#registrationStatus').text(`Registrasi gagal: ${result.message}`);
+          }
+        });
+      }).catch((error) => {
+        console.log("Gagal mengambil informasi pengguna:", error);
+      });
+    });
+  });
+</script>
+
+
+</body>
+</html>

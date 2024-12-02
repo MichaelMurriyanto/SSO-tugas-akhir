@@ -1,0 +1,53 @@
+/* index.css */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #e8f5e9; /* Warna latar belakang hijau muda */
+    color: #1b5e20; /* Warna teks hijau gelap */
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #388e3c; /* Warna hijau untuk judul */
+}
+
+nav {
+    background-color: #c8e6c9; /* Warna latar belakang untuk navigasi */
+    border: 1px solid #388e3c; /* Border hijau gelap */
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: center; /* Memusatkan isi navigasi */
+}
+
+nav ul {
+    list-style-type: none; /* Menghilangkan bullet points */
+    padding: 0; /* Menghilangkan padding default */
+}
+
+nav li {
+    display: inline; /* Mengatur item navigasi menjadi inline untuk memusatkan */
+    margin: 0 10px; /* Margin antar item navigasi */
+}
+
+a {
+    display: inline-block;
+    text-align: center;
+    padding: 10px;
+    background-color: #4caf50; /* Warna hijau untuk tombol */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+a:hover {
+    background-color: #388e3c; /* Warna hijau gelap saat hover */
+}
+
+#status {
+    margin: 20px 0;
+    font-weight: bold;
+    text-align: center; /* Memusatkan teks status */
+}

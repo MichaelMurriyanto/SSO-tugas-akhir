@@ -1,34 +1,36 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <script src="https://zeptojs.com/zepto.min.js"></script>
-    <script src="http://localhost:8080/js/keycloak.js"></script>
-    <script src="app.js"></script>
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <title>Kependudukan: Home</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> <!-- Menentukan tipe konten halaman -->
+    <script src="https://zeptojs.com/zepto.min.js"></script> <!-- Menyisipkan pustaka Zepto.js -->
+    <script src="http://localhost:8080/js/keycloak.js"></script> <!-- Menyisipkan pustaka Keycloak untuk SSO -->
+    <script src="app.js"></script> <!-- Menyisipkan file JavaScript aplikasi -->
+    <link rel="stylesheet" type="text/css" href="style.css"> <!-- Menyisipkan stylesheet -->
+    <title>Kependudukan: Home</title> <!-- Menentukan judul halaman -->
   </head>
   <body>
-    <h1>Kependudukan</h1>
-    <nav role="navigation">
-      <div id="status"></div>
+    <h1>Kependudukan</h1> <!-- Judul utama halaman -->
+    <nav role="navigation"> <!-- Menu navigasi utama -->
+      <div id="status"></div> <!-- Status otentikasi SSO akan ditampilkan di sini -->
       <ul>
         <li>
-          <a title="login" id="login" href="me.html">Login</a>
+          <a title="login" id="login" href="me.html">Login</a> <!-- Tombol untuk login -->
         </li>
         <li>
-          <a title="logout" id="logout" href="index.html">logout</a>
+          <a title="logout" id="logout" href="index.html">logout</a> <!-- Tombol untuk logout -->
         </li>
       </ul>
     </nav>
     <script>
       $(function () {
+        // Inisialisasi Keycloak dan memeriksa status SSO
         window.keycloak
           .init({
-            flow: 'implicit',
-            onLoad: 'check-sso',
+            flow: 'implicit', // Menggunakan flow implicit
+            onLoad: 'check-sso', // Cek status SSO pada saat load
           })
           .then(function (authenticated) {
+            // Tampilkan status otentikasi pada halaman
             if (authenticated) {
               $('#status').html($('<pre>SSO Authenticated ✅</pre>'));
             } else {
@@ -36,20 +38,22 @@
             }
           })
           .catch(function () {
-            console.log('failed to initialize');
+            console.log('failed to initialize'); // Log error jika inisialisasi gagal
           });
 
+        // Event handler untuk tombol login
         $('#login').on('click', function (e) {
-          e.preventDefault();
+          e.preventDefault(); // Mencegah aksi default link
           window.keycloak.login({
-            redirectUri: window.location.origin + '/v2/app1/me.html',
+            redirectUri: window.location.origin + '/v2/app1/me.html', // Redirect ke halaman user info setelah login
           });
         });
 
+        // Event handler untuk tombol logout
         $('#logout').on('click', function (e) {
-          e.preventDefault();
+          e.preventDefault(); // Mencegah aksi default link
           window.keycloak.logout({
-            redirectUri: window.location.origin + '/v2/app1/index.html',
+            redirectUri: window.location.origin + '/v2/app1/index.html', // Redirect ke halaman utama setelah logout
           });
         });
       });

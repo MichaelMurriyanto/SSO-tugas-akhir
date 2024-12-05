@@ -1,31 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <title>Kependudukan: user profile</title>
-    <script src="https://zeptojs.com/zepto.min.js"></script>
-    <script src="http://localhost:8080/js/keycloak.js"></script>
-    <script src="app.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="me.css" />
+    <meta charset="UTF-8" /> <!-- Menentukan encoding karakter -->
+    <title>Kependudukan: user profile</title> <!-- Menentukan judul halaman -->
+    <script src="https://zeptojs.com/zepto.min.js"></script> <!-- Menyisipkan pustaka Zepto.js -->
+    <script src="http://localhost:8080/js/keycloak.js"></script> <!-- Menyisipkan pustaka Keycloak -->
+    <script src="app.js"></script> <!-- Menyisipkan file JavaScript aplikasi -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Menyisipkan pustaka jQuery -->
+    <link rel="stylesheet" href="me.css" /> <!-- Menyisipkan stylesheet -->
   </head>
   <body>
-    <h2 id="page-title">Kependudukan: User Info</h2>
-    <div id="main"></div>
+    <h2 id="page-title">Kependudukan: User Info</h2> <!-- Judul halaman -->
+    <div id="main"></div> <!-- Elemen kosong untuk menampilkan data user -->
     <script>
       $(function () {
+        // Inisialisasi Keycloak
         window.keycloak
           .init({
-            flow: 'implicit',
-            onLoad: 'check-sso',
+            flow: 'implicit', // Menggunakan flow implicit
+            onLoad: 'check-sso', // Memeriksa status SSO saat halaman dimuat
           })
           .then(function (authenticated) {
             if (!authenticated) {
+              // Logout jika pengguna belum terautentikasi
               window.keycloak.logout({
                 redirectUri: window.location.origin + '/v2/app1/index.html'
               });
             }
+            // Memuat informasi pengguna dari Keycloak
             window.keycloak.loadUserInfo().then((data) => {
+              // Kirim data user ke server untuk disimpan
               $.ajax({
                 url: 'save_user.php',
                 type: 'POST',
@@ -34,7 +38,7 @@
                 success: function(response) {
                   const userData = JSON.parse(response);
 
-                  // Menampilkan data pengguna dalam bentuk sederhana (tanpa tabel)
+                  // Menampilkan data pengguna di halaman
                   let userInfoHtml = '<h3>Informasi Pengguna:</h3>';
                   for (const key in userData) {
                     if (userData.hasOwnProperty(key)) {
@@ -42,23 +46,22 @@
                       userInfoHtml += `<p><strong>${key}:</strong> ${value}</p>`;
                     }
                   }
-                  
-                  $('#main').html(userInfoHtml);
-                  
-                  // Tambahkan tombol back to home
+                  $('#main').html(userInfoHtml); // Menampilkan data
+
+                  // Tambahkan tombol untuk kembali ke homepage
                   $('<a>', {
                     text: 'back to homepage',
                     href: 'index.html',
                     style: 'display: block; margin-top: 15px;'
                   }).appendTo('#main');
-                  
-                  // Tambahkan tombol input data
+
+                  // Tambahkan tombol input data tambahan
                   $('<button>', {
                     text: 'Input Data',
                     id: 'show-form-button'
                   }).appendTo('#main');
-                  
-                  // Form input data (disembunyikan secara default)
+
+                  // Menyisipkan form untuk input data tambahan
                   $('#main').after(`
                     <div id="input-form" style="display: none; margin-top: 15px;">
                       <h3>Input Data Tambahan</h3>
@@ -78,44 +81,41 @@
                     </div>
                   `);
 
-                  // Event handler untuk tombol input data
+                  // Event handler untuk menampilkan/menyembunyikan form input data
                   $('#show-form-button').on('click', function () {
                     $('#input-form').toggle();
                   });
 
                   // AJAX untuk menyimpan data tambahan
                   $('#user-form').on('submit', function (e) {
-                    e.preventDefault();
-                    const formData = $(this).serialize();
+                    e.preventDefault(); // Mencegah form di-submit secara default
+                    const formData = $(this).serialize(); // Serialisasi data form
                     $.ajax({
                       url: 'save_additional_data.php',
                       type: 'POST',
-                      data: formData + '&sub=' + userData.sub,
+                      data: formData + '&sub=' + userData.sub, // Menambahkan ID user (sub)
                       success: function (res) {
                         alert('Data berhasil disimpan');
                         location.reload(); // Refresh halaman untuk menampilkan data baru
                       },
                       error: function (err) {
-                        console.log(err);
+                        console.log(err); // Log error jika ada masalah
                       }
                     });
                   });
                 },
                 error: function(err) {
-                  console.log(err);
+                  console.log(err); // Log error jika AJAX gagal
                 }
               });
             }).catch((error) => {
-              console.log(error);
+              console.log(error); // Log error jika gagal memuat informasi user
             });
           })
           .catch(function () {
-            console.log('failed to initialize');
+            console.log('failed to initialize'); // Log error jika inisialisasi gagal
           });
       });
     </script>
-
-    
-    
   </body>
 </html>

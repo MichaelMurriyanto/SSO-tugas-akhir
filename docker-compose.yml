@@ -9,14 +9,14 @@ services:
           - MYSQL_PASSWORD=password
           - MYSQL_ROOT_PASSWORD=root_password
       ports:
-          - 3309:3309
+          - 3309:3306  # Port diubah agar sesuai dengan konfigurasi default MySQL
 
-  phpmyadmin:
-      image: phpmyadmin/phpmyadmin  # Menggunakan image phpMyAdmin dari Docker Hub
+  phpmyadmin: 
+      image: phpmyadmin/phpmyadmin
       environment:
-          - PMA_HOST=db              # Nama service MySQL (sesuai dengan nama service "db")
-          - PMA_USER=root             # User yang digunakan untuk login ke MySQL
-          - PMA_PASSWORD=root_password  # Password user root MySQL
+          - PMA_HOST=db
+          - PMA_USER=root
+          - PMA_PASSWORD=root_password
       ports:
           - 8081:80  # Mengekspos phpMyAdmin pada port 8081
 
@@ -27,11 +27,11 @@ services:
           - KEYCLOAK_ADMIN_PASSWORD=admin
           - DB_VENDOR=mysql
           - DB_ADDR=db
-          - DB_PORT=3309
+          - DB_PORT=3306
       links:
           - db:db
       ports:
-          - 8080:8080
+          - 8180:8080  # Ganti port 8080 menjadi 8180
           - 9999:9990
           - 443:8443
       volumes:

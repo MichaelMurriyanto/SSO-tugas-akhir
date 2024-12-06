@@ -9,7 +9,7 @@ services:
           - MYSQL_PASSWORD=password
           - MYSQL_ROOT_PASSWORD=root_password
       ports:
-          - 3309:3306  # Port diubah agar sesuai dengan konfigurasi default MySQL
+          - 3309:3306  # Sesuaikan port MySQL
 
   phpmyadmin: 
       image: phpmyadmin/phpmyadmin
@@ -31,9 +31,9 @@ services:
       links:
           - db:db
       ports:
-          - 8180:8080  # Ganti port 8080 menjadi 8180
-          - 9999:9990
-          - 443:8443
+          - 8180:8080  # Port Keycloak UI diubah ke 8180
+          - 9998:9990  # Port administratif diubah ke 9998
+          - 444:8443   # Port HTTPS diubah ke 444
       volumes:
           - ./data:/data
       command: start-dev
